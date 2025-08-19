@@ -1,13 +1,15 @@
 import jwt, { SignOptions } from "jsonwebtoken";
 import { ENV } from "../config/env";
 
-const JWT_SECRET = ENV.JWT_SECRET as string;
+// make sure ENV.JWT_SECRET is always a string
+const JWT_SECRET: string = ENV.JWT_SECRET as string;
 
-export const signToken = (payload: object, expiresIn: string | number = "7d") => {
-  const options: SignOptions = { expiresIn: expiresIn as any }; // 👈 force cast
-  return jwt.sign(payload, JWT_SECRET, options);
+export const signToken = (
+  payload: object,
+  expiresIn: SignOptions["expiresIn"] = "7d"   // 👈 use correct type
+) => {
+  return jwt.sign(payload, JWT_SECRET, { expiresIn } as SignOptions);
 };
-
 
 export const verifyToken = <T = any>(token: string): T | null => {
   try {
