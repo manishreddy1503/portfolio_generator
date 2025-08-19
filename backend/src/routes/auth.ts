@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router, Request, Response } from 'express';
 import passport from 'passport';
 import { ENV } from '../config/env';
 import { signToken } from '../utils/jwt';
@@ -10,8 +10,11 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get(
   '/google/callback',
   passport.authenticate('google', { session: false, failureRedirect: `${ENV.CLIENT_URL}/login?error=oauth` }),
-  (req, res) => {
-    const user = req.user as any;
+  (req: Request, res: Response) => {
+    const user = req.user;
+    if (!user) {
+      return res.redirect(`${ENV.CLIENT_URL}/login?error=no_user`);
+    }
     const token = signToken({ userId: user.id });
     res.cookie(ENV.COOKIE_NAME, token, {
       httpOnly: true,
@@ -23,7 +26,7 @@ router.get(
   }
 );
 
-router.post('/logout', (req, res) => {
+router.post('/logout', (req: Request, res: Response) => {
   res.clearCookie(ENV.COOKIE_NAME, { httpOnly: true, sameSite: 'lax', secure: false });
   res.json({ ok: true });
 });

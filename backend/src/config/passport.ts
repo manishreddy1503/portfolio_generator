@@ -23,16 +23,20 @@ passport.use(
             email,
             name: profile.displayName || email || 'User',
             avatarUrl,
-          } as any);
+          });
         } else {
           const needsUpdate = user.name !== (profile.displayName || user.name) || user.avatarUrl !== avatarUrl;
           if (needsUpdate) {
-            await repo.update(user.id as any, { name: profile.displayName || user.name, avatarUrl });
+            await repo.update(user.id, { name: profile.displayName || user.name, avatarUrl });
           }
+        }
+        // Add null check for user
+        if (!user) {
+          return done(new Error('Failed to create or find user'), undefined);
         }
         return done(null, { id: user.id.toString() });
       } catch (err) {
-        return done(err as any, undefined);
+        return done(err, undefined);
       }
     }
   )

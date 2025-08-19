@@ -14,6 +14,7 @@ type Project = {
   description?: string;
   link?: string;
   technologies?: string[];
+  imageUrl?: string;
 };
 
 type Certification = {
