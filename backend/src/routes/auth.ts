@@ -18,8 +18,8 @@ router.get(
     const token = signToken({ userId: user.id });
     res.cookie(ENV.COOKIE_NAME, token, {
       httpOnly: true,
-      sameSite: 'lax',
-      secure: false,
+      sameSite: 'none',
+      secure: true,
       maxAge: 7 * 24 * 60 * 60 * 1000
     });
     res.redirect(ENV.CLIENT_URL);
