@@ -4,7 +4,7 @@ dotenv.config();
 export const ENV = {
   PORT: Number(process.env.PORT || 4000),
   CLIENT_URL: process.env.CLIENT_URL || 'http://localhost:5173',
-  CLIENT_URLS: process.env.CLIENT_URLS ? process.env.CLIENT_URLS.split(',') : ['http://localhost:5173'],
+  CLIENT_URLS: process.env.CLIENT_URLS ?  process.env.CLIENT_URLS?.split(",") || [] : ['http://localhost:5173'],
   MONGO_URL: process.env.MONGODB_URI || process.env.MONGO_URL || '',
   JWT_SECRET: process.env.JWT_SECRET || 'dev_jwt_secret_change_me',
   COOKIE_NAME: process.env.COOKIE_NAME || 'portfolio_jwt',
